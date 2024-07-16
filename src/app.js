@@ -18,21 +18,26 @@ const server = http.createServer((request, response) => {
       response.status = 200;
       response.statusMessage = "OK";
       response.header = "Content-Type: text/plain, application/json";
-      response.write(`Hello, ${userName}`);
+      response.end(`Hello, ${userName}`);
     } else {
       response.status = 400;
+      response.statusMessage = "OK";
       response.header = "Content-Type: text/plain";
-      response.write("Enter a name");
+      response.end("Enter a name");
     }
-    response.end();
     return;
   }
 
-  response.status = 200;
-  response.statusMessage = "OK";
+  if (request.url.startsWith("/")) {
+    response.status = 200;
+    response.statusMessage = "OK";
+    response.header = "Content-Type: text/plain";
+    response.end("Hello, world!");
+  }
+
+  response.status = 500;
   response.header = "Content-Type: text/plain";
-  response.write("Hello, world!");
-  response.end();
+  response.end("Server error");
 });
 
 server.listen(3003, () => {
