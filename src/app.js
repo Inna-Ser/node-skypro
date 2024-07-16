@@ -2,7 +2,7 @@ const http = require("http");
 const { getUsers, getName } = require("./modules/users");
 
 const server = http.createServer((request, response) => {
-  if (request.url === "/users") {
+  if (request.url === "/?users") {
     response.status = 200;
     response.statusMessage = "OK";
     response.header = "Content-Type: application/json";
@@ -11,9 +11,9 @@ const server = http.createServer((request, response) => {
     return;
   }
 
-  if (request.url.startsWith("/hello =")) {
-    const userId = parseInt(request.url.split("=")[1], 10);
-    const userName = getName(userId);
+  if (request.url.startsWith("/hello=")) {
+    const name = decodeURIComponent(request.url.split("=")[1]);
+    const userName = getName(name);
     if (userName) {
       response.status = 200;
       response.statusMessage = "OK";
@@ -31,7 +31,7 @@ const server = http.createServer((request, response) => {
   response.status = 200;
   response.statusMessage = "OK";
   response.header = "Content-Type: text/plain";
-  response.write("Hello, world!")
+  response.write("Hello, world!");
   response.end();
 });
 

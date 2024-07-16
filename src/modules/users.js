@@ -6,10 +6,10 @@ const getUsers = () => {
   return fs.readFileSync(filePath, "utf-8");
 };
 
-const getName = (id) => {
+const getName = (name) => {
   const filePath = path.join(__dirname, "../data/users.json");
   const users = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  const user = users.find((user) => user.id === id);
+  const user = users.find((user) => user.name.toLowerCase() === name.toLowerCase());
   return user ? user.name : null;
 };
 
