@@ -11,7 +11,7 @@ const server = http.createServer((request, response) => {
     return;
   }
 
-  if (request.url.startsWith("/hello=")) {
+  if (request.url.startsWith("/?hello=")) {
     const name = decodeURIComponent(request.url.split("=")[1]);
     const userName = getName(name);
     if (userName) {
