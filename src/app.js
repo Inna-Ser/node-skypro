@@ -2,7 +2,7 @@ const http = require("http");
 const { getUsers, getName } = require("./modules/users");
 
 const server = http.createServer((request, response) => {
-  if (request.url === "/?users") {
+  if (request.url === "/users") {
     response.status = 200;
     response.statusMessage = "OK";
     response.header = "Content-Type: application/json";
@@ -15,24 +15,31 @@ const server = http.createServer((request, response) => {
     const name = decodeURIComponent(request.url.split("=")[1]);
     const userName = getName(name);
     if (userName) {
-      response.status = 200;
+      response.statusCode = 200;
       response.statusMessage = "OK";
-      response.header = "Content-Type: text/plain, application/json";
-      response.write(`Hello, ${userName}`);
+      response.setHeader = "Content-Type: text/plain, application/json";
+      response.end(`Hello, ${userName}`);
     } else {
-      response.status = 400;
-      response.header = "Content-Type: text/plain";
-      response.write("Enter a name");
+      response.statusCode = 400;
+      response.statusMessage = "OK";
+      response.setHeader = "Content-Type: text/plain";
+      response.end("Enter a correct name");
     }
-    response.end();
     return;
   }
-
-  response.status = 200;
-  response.statusMessage = "OK";
-  response.header = "Content-Type: text/plain";
-  response.write("Hello, world!");
-  response.end();
+  if (request.url === "/") {
+    response.statusCode = 200;
+    response.statusMessage = "OK";
+    response.setHeader = "Content-Type: text/plain";
+    response.end("Hello, world!");
+    return;
+  } else {
+    response.statusCode = 500;
+    response.statusMessage = "Bad request";
+    response.setHeader = "Content-Type: text/plain";
+    response.end("Server error");
+    return;
+  }
 });
 
 server.listen(3003, () => {
